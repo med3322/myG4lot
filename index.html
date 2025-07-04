@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ควบคุมอุปกรณ์ด้วย Firebase</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Style -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Kanit', sans-serif;
+      background: url('https://i.gifer.com/6U4.gif') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.65);
+      padding: 50px 40px;
+      border-radius: 30px;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+      text-align: center;
+      backdrop-filter: blur(8px);
+      animation: fadeIn 1.2s ease;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 40px;
+      text-shadow: 2px 2px 4px #000;
+    }
+
+    button {
+      font-size: 1.8rem;
+      padding: 20px 50px;
+      margin: 20px;
+      border: none;
+      border-radius: 15px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+    }
+
+    button.on {
+      background: linear-gradient(135deg, #00e676, #1b5e20);
+      color: white;
+    }
+
+    button.off {
+      background: linear-gradient(135deg, #ff1744, #b71c1c);
+      color: white;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(255,255,255,0.3);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      button {
+        width: 100%;
+        font-size: 1.5rem;
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>ควบคุมสถานะอุปกรณ์</h1>
+    <button class="on" onclick="setStatus(1)">🔌 เปิด</button>
+    <button class="off" onclick="setStatus(0)">❌ ปิด</button>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDeJ1JAK-LiofsI-uIEnAguw54VprrLEs4",
+      authDomain: "myg4lot-d546e.firebaseapp.com",
+      projectId: "myg4lot-d546e",
+      storageBucket: "myg4lot-d546e.firebasestorage.app",
+      messagingSenderId: "607353675783",
+      appId: "1:607353675783:web:3eca02b38ec1341f3fcaa2",
+      measurementId: "G-4DQKE659GD"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    function setStatus(value) {
+      db.collection("devices").doc("device1").set({
+        status: value
+      }).then(() => {
+        alert("สถานะถูกเปลี่ยนเป็น " + (value === 1 ? "เปิด" : "ปิด"));
+      }).catch((error) => {
+        console.error("เกิดข้อผิดพลาด: ", error);
+      });
+    }
+  </script>
+
+</body>
+</html>
